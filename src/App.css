@@ -65,6 +65,10 @@ body {
     justify-content: center;
     align-items: center;
 }
+.crossedOut {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
 /*Word display style*/
 .word-display {
     display: flex;
@@ -99,6 +103,7 @@ body {
     width: 35px;
     margin: 3px;
     background-color: yellow;
+    color: black;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -107,13 +112,15 @@ body {
 }
 button.correct {
     background-color: green;
+    color: black;
 }
 
 button.wrong {
     background-color: red;
+    color: black;
     cursor: not-allowed;
 }
-
+/*Play again style*/
 .play-again-container {
     display: flex;
     justify-content: center;

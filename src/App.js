@@ -7,6 +7,7 @@ import clsx from "clsx";
 function App() {
   const [currentWord, setCurrentWord] = useState("react");
   const [guessedLetters, setGuessedLetters] = useState([]);
+  const [wrongGuess, setWrongGuess] = useState(0);
   const splitCurrentWord = currentWord.split("");
 
   const displayCurrentWord = splitCurrentWord.map((letter, index) => {
@@ -21,12 +22,15 @@ function App() {
 
     return (
       <span key={index} className={className}>
-        {isGuessed ? letter : "_"}
+        {isGuessed ? letter.toUpperCase() : "_"}
       </span>
     );
   });
 
   function checkLetter(letter) {
+    if (!currentWord.includes(letter)) {
+      setWrongGuess(prev => prev + 1);
+    }
     setGuessedLetters(
       guessedLetters.includes(letter) ? guessedLetters : [...guessedLetters, letter]
     );
@@ -55,9 +59,17 @@ function App() {
     );
   });
 
-  const getChips = languages.map((language) => {
+  const getChips = languages.map((language, index) => {
+    const isCrossedOut = wrongGuess > index;
+
+    const className = clsx({
+      chip: true,
+      crossedOut: isCrossedOut,
+    })
     return (
-      <div key={language.name} style={{ backgroundColor: language.backgroundColor }} className="chip">
+      <div key={language.name}
+          style={{ backgroundColor: language.backgroundColor }}
+          className={className}>
         <p>{language.name}</p>
       </div>
     );
