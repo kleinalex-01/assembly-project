@@ -105,6 +105,15 @@ body {
     font-size: 1.5rem;
     cursor: pointer;
 }
+button.correct {
+    background-color: green;
+}
+
+button.wrong {
+    background-color: red;
+    cursor: not-allowed;
+}
+
 .play-again-container {
     display: flex;
     justify-content: center;
