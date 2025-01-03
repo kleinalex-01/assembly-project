@@ -3,26 +3,34 @@ import './App.css';
 import Header from "./Components/Header";
 import { languages } from "./Languages";
 import clsx from "clsx";
+import { words } from './words';
+import Confetti from 'react-confetti';
 
 function App() {
-  const [currentWord, setCurrentWord] = useState("react");
+  const [currentWord, setCurrentWord] = useState(words[Math.floor(Math.random() * words.length)]);
   const [guessedLetters, setGuessedLetters] = useState([]);
   const [wrongGuess, setWrongGuess] = useState(0);
   const splitCurrentWord = currentWord.split("");
+  const wrongGuessCount = languages.filter((languages, index) => index < wrongGuess).length;
+  const isGameWon = splitCurrentWord.every((letter) => guessedLetters.includes(letter));
+  const isGameLost = wrongGuessCount === languages.length - 1;
+  const isGameOver = isGameWon || isGameLost;
 
   const displayCurrentWord = splitCurrentWord.map((letter, index) => {
     const isGuessed = guessedLetters.includes(letter);
     const isCorrect = isGuessed && currentWord.includes(letter);
     const isWrong = isGuessed && !currentWord.includes(letter);
+    const missingLetter = !isGuessed && currentWord.includes(letter);
     const className = clsx({
       correct: isCorrect,
       wrong: isWrong,
       letter: true,
+      missingLetter: missingLetter,
     });
 
     return (
       <span key={index} className={className}>
-        {isGuessed ? letter.toUpperCase() : "_"}
+        {isGameLost ? letter.toUpperCase() : (isGuessed ? letter.toUpperCase() : "")}
       </span>
     );
   });
@@ -45,14 +53,16 @@ function App() {
     const className = clsx({
       correct: isCorrect,
       wrong: isWrong,
+      disabled: isGameOver,
     });
+
 
     return (
       <button
         key={letter}
         onClick={() => checkLetter(letter)}
         className={className}
-        disabled={isGuessed}
+        disabled={isWrong}
       >
         {letter.toUpperCase()}
       </button>
@@ -61,7 +71,6 @@ function App() {
 
   const getChips = languages.map((language, index) => {
     const isCrossedOut = wrongGuess > index;
-
     const className = clsx({
       chip: true,
       crossedOut: isCrossedOut,
@@ -75,12 +84,20 @@ function App() {
     );
   });
 
+  function startNewGame() {
+    setWrongGuess(0);
+    setGuessedLetters([]);
+    setCurrentWord(prev => words[Math.floor(Math.random() * words.length)]);
+  }
+
   return (
     <>
+      {isGameWon && <Confetti />}
       <Header />
       <div className="display-win-lose">
         <div className="display-container">
-          <p>Congratulations! You won</p>
+          {isGameWon &&<p className='win-background'>Congratulations! You won</p>}
+          {isGameLost &&<p className='lose-background'>You lost</p>}
         </div>
       </div>
       <div className="chips-container">{getChips}</div>
@@ -91,7 +108,7 @@ function App() {
         {displayKeyboard}
       </div>
       <div className="play-again-container">
-        <button className="play-again">Play Again</button>
+        {isGameOver &&<button className="play-again" onClick={startNewGame}>Play Again</button>}
       </div>
     </>
   );

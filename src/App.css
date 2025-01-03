@@ -29,7 +29,6 @@ body {
 /*Win-lose Display*/
 .display-win-lose {
     display: flex;
-    background-color: green;
     height: 80px;
     width: 400px;
 }
@@ -90,6 +89,18 @@ body {
     justify-content: center;
     align-items: center;
 }
+.missingLetter {
+    height: 40px;
+    width: 40px;
+    margin: 3px;
+    background-color: #323232;
+    border: black 2px solid;
+    border-bottom: white 2px solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: red;
+}
 /*Keyboard style*/
 .keyboard {
     display: flex;
@@ -114,11 +125,13 @@ button.correct {
     background-color: green;
     color: black;
 }
-
 button.wrong {
     background-color: red;
     color: black;
+    cursor: not-allowed;}
+button.disabled {
     cursor: not-allowed;
+    opacity: 0.5;
 }
 /*Play again style*/
 .play-again-container {
@@ -132,7 +145,23 @@ button.wrong {
     width: 150px;
     background-color: lightseagreen;
 }
-
+/*Win/Lose background color*/
+.win-background {
+    background-color: green;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.lose-background {
+    background-color: red;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 
 
